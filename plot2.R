@@ -1,0 +1,10 @@
+png(filename="plot2.png",height=480,width=480)
+hpc <- read.csv2("household_power_consumption.txt",header=TRUE,stringsAsFactors=FALSE,na.strings="?")
+hpc$DateFormat <- as.Date(strptime(hpc$Date,"%d/%m/%Y"))
+projdates <- hpc$DateFormat %in% c(as.Date("2007/02/01",format="%Y/%m/%d"),as.Date("2007/02/02",format="%Y/%m/%d"))
+hpc2007020102 <- hpc[projdates,]
+hpc2007020102$GlobalActivePower <- as.numeric(hpc2007020102$Global_active_power)
+noofobs <- nrow(hpc2007020102)
+globalactivepower <- ts(data=hpc2007020102$GlobalActivePower,start=1,end=noofobs,frequency=1)
+plot(globalactivepower,ylab="Global Active Power (kilowatts")
+dev.off()
